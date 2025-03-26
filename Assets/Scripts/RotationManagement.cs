@@ -2,8 +2,6 @@ using UnityEngine;
 
 public class RotationManagement : MonoBehaviour
 {
-    [SerializeField] private GameObject actualObject;
-
     private enum Difficulty : byte
     {
         firstLevel = 0,
@@ -39,11 +37,11 @@ public class RotationManagement : MonoBehaviour
             switch (actualDifficulty)
             {
                 case Difficulty.firstLevel:
-                    actualObject.transform.Rotate(0, rotY, 0, Space.World);
+                    transform.Rotate(0, rotY, 0, Space.World);
                     break ;
                 case Difficulty.secondLevel:
                 case Difficulty.thirdLevel:
-                    actualObject.transform.Rotate(rotX, rotY, 0, Space.World);
+                    transform.Rotate(rotX, rotY, 0, Space.World);
                     break ;
             }
         }
