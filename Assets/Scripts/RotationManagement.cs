@@ -1,49 +1,78 @@
 using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.InputSystem;
 
 public class RotationManagement : MonoBehaviour
 {
-    private enum Difficulty : byte
-    {
-        firstLevel = 0,
-        secondLevel = 1,
-        thirdLevel = 2
-    }
-    private Difficulty actualDifficulty = Difficulty.secondLevel;
+    private LevelManager _levelManager;
+    
+    [SerializeField] private InputActionReference _clickAction;
+    [SerializeField] private InputActionReference _pointerAction;
 
-    private bool isDragging = false;
-    private Vector3 lastMousePosition;
+    [SerializeField] private UnityEvent OnDragReleased;
+    
     private float rotationSpeed = 20f;
+    private Vector2 lastPointer;
+    private bool isDragging = false;
 
+    private void Awake()
+    {
+        _levelManager = GetComponent<LevelManager>();
+    }
+    
+    private void OnEnable()
+    {
+        _clickAction.action.Enable();
+        _pointerAction.action.Enable();
+        
+        _clickAction.action.started += OnClicked;
+        _clickAction.action.canceled += OnReleased;
+    }
+
+    private void OnDisable()
+    {
+        _clickAction.action.started -= OnClicked;
+        _clickAction.action.canceled -= OnReleased;
+        
+        _clickAction.action.Disable();
+        _pointerAction.action.Disable();
+    }
+
+    private void OnClicked(InputAction.CallbackContext _)
+    {
+        isDragging = true;
+        lastPointer = _pointerAction.action.ReadValue<Vector2>();
+    }
+
+    private void OnReleased(InputAction.CallbackContext _)
+    {
+        isDragging = false;
+        
+        // Launch event
+        OnDragReleased?.Invoke();
+    }
+    
     private void Update()
     {
-        if (Input.GetMouseButtonDown(0))
-        {
-            isDragging = true;
-            lastMousePosition = Input.mousePosition;
-        }
-        else if (Input.GetMouseButtonUp(0))
-        {
-            isDragging = false;
-        }
+        if (!isDragging) return;
+        
+        Vector2 current = _pointerAction.action.ReadValue<Vector2>();
+        Vector2 delta = current - lastPointer;
+        lastPointer = current;
 
-        if (isDragging)
+        float rotX = delta.y * rotationSpeed * Time.deltaTime;
+        float rotY = -delta.x * rotationSpeed * Time.deltaTime;
+
+        switch (_levelManager.actualDifficulty)
         {
-            Vector3 mouseDelta = Input.mousePosition - lastMousePosition;
-            lastMousePosition = Input.mousePosition;
+            case Difficulty.firstLevel:
+                _levelManager.spawnedObject.transform.Rotate(0, rotY, 0, Space.World);
+                break;
 
-            float rotX = mouseDelta.y * rotationSpeed * Time.deltaTime;
-            float rotY = -mouseDelta.x * rotationSpeed * Time.deltaTime;
-
-            switch (actualDifficulty)
-            {
-                case Difficulty.firstLevel:
-                    transform.Rotate(0, rotY, 0, Space.World);
-                    break ;
-                case Difficulty.secondLevel:
-                case Difficulty.thirdLevel:
-                    transform.Rotate(rotX, rotY, 0, Space.World);
-                    break ;
-            }
+            case Difficulty.secondLevel:
+            case Difficulty.thirdLevel:
+                _levelManager.spawnedObject.transform.transform.Rotate(rotX, rotY, 0, Space.World);
+                break;
         }
     }
 }
