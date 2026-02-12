@@ -10,14 +10,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 40b68b4326dbb914898c8f1698847e7e, type: 3}
-  m_Name: TestLevel
+  m_Name: GlobalBaseLevel
   m_EditorClassIdentifier: Assembly-CSharp::Level
   id: 0
-  objectPrefab: {fileID: 6448356150303865357, guid: 0e6bba78cc23ab6458687cf46839abc4,
+  objectPrefab: {fileID: 8542741594409356871, guid: 6c41c44a4c10e7e4fb011dce3aa202d8,
     type: 3}
   spawnPosition: {x: 6, y: 1.75, z: 7.445475}
-  spawnRotation: {x: 26.644, y: 88.106, z: 247.626}
-  correctRotation: {x: 0, y: 0, z: 0}
+  spawnRotation: {x: 0, y: 0, z: 0}
+  correctX:
+  - 0
+  correctY:
+  - 0
+  - 180
+  correctZ:
+  - 0
   ignoreX: 0
   ignoreY: 0
   ignoreZ: 1

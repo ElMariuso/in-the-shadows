@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "New Level", menuName = "GameData/New Level")]
@@ -11,6 +12,8 @@ public class Level : ScriptableObject
     public Vector3 spawnRotation;
     
     [Header("Gameplay")]
-    public Vector3 correctRotation;
-    public bool ignoreX, ignoreY, ignoreZ;
+    public List<float> correctX;
+    public List<float> correctY;
+    
+    public bool ignoreX, ignoreY;
 }

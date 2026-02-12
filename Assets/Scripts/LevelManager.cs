@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class LevelManager : MonoBehaviour
@@ -29,9 +30,27 @@ public class LevelManager : MonoBehaviour
     
     private bool IsCorrect()
     {
-        Quaternion target = Quaternion.Euler(level.correctRotation);
-        float angle = Quaternion.Angle(spawnedObject.transform.rotation, target);
+        Vector3 current = spawnedObject.transform.eulerAngles;
+        float tolerance = 10f;
+
+        // Check axis
+        if (!level.ignoreX) return CheckAxis(current.x, level.correctX, tolerance);
+        if (!level.ignoreY) return CheckAxis(current.y, level.correctY, tolerance);
+
+        return true;
+    }
+
+    private bool CheckAxis(float currentAxis, List<float> correctAxis, float tolerance)
+    {
+        if (correctAxis == null || correctAxis.Count == 0) return true;
         
-        return angle < 2f;
+        foreach (var axis in correctAxis)
+        {
+            float delta = Mathf.Abs(Mathf.DeltaAngle(currentAxis, axis));
+            
+            if (delta <= tolerance) return true;
+        }
+
+        return false;
     }
 }
