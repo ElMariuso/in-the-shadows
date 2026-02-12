@@ -11,6 +11,7 @@ public class Level : ScriptableObject
     public Vector3 spawnRotation;
     
     [Header("Gameplay")]
+    public Difficulty difficulty = Difficulty.secondLevel;
     public List<float> correctX;
     public List<float> correctY;
     

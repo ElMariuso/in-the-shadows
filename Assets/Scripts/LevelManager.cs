@@ -6,11 +6,12 @@ public class LevelManager : MonoBehaviour
     private Level level;
 
     public GameObject spawnedObject;
-    public Difficulty actualDifficulty = Difficulty.secondLevel;
+    public Difficulty actualDifficulty;
 
     private void Awake()
     {
         level = GameManager.Instance.currentLevel;
+        actualDifficulty = level.difficulty;
 
         Init();
     }
