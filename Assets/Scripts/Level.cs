@@ -4,7 +4,6 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Level", menuName = "GameData/New Level")]
 public class Level : ScriptableObject
 {
-    public short id = 0;
     public GameObject objectPrefab;
     
     [Header("Spawn")]

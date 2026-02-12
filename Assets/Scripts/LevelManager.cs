@@ -3,16 +3,18 @@ using UnityEngine;
 
 public class LevelManager : MonoBehaviour
 {
-    [SerializeField] private Level level;
+    private Level level;
 
     public GameObject spawnedObject;
     public Difficulty actualDifficulty = Difficulty.secondLevel;
 
     private void Awake()
     {
+        level = GameManager.Instance.currentLevel;
+
         Init();
     }
-
+    
     private void Init()
     {
         spawnedObject = Instantiate(
@@ -31,16 +33,15 @@ public class LevelManager : MonoBehaviour
     private bool IsCorrect()
     {
         Vector3 current = spawnedObject.transform.eulerAngles;
-        float tolerance = 10f;
-
+        
         // Check axis
-        if (!level.ignoreX) return CheckAxis(current.x, level.correctX, tolerance);
-        if (!level.ignoreY) return CheckAxis(current.y, level.correctY, tolerance);
+        if (!level.ignoreX) return CheckAxis(current.x, level.correctX);
+        if (!level.ignoreY) return CheckAxis(current.y, level.correctY);
 
         return true;
     }
 
-    private bool CheckAxis(float currentAxis, List<float> correctAxis, float tolerance)
+    private bool CheckAxis(float currentAxis, List<float> correctAxis, float tolerance = 10f)
     {
         if (correctAxis == null || correctAxis.Count == 0) return true;
         
