@@ -14,6 +14,8 @@ public class Level : ScriptableObject
     public Difficulty difficulty = Difficulty.secondLevel;
     public List<float> correctX;
     public List<float> correctY;
+    public List<float> correctZ;
+    public float tolerance = 15f;
     
-    public bool ignoreX, ignoreY;
+    public bool ignoreX, ignoreY, ignoreZ;
 }
